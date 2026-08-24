@@ -11,17 +11,6 @@ nvim/
     │   ├── runner.lua       -- <C-A-n> compile-and-run
     │   └── lazy.lua         -- bootstraps lazy.nvim, auto-imports lua/plugins/
     └── plugins/              -- add new plugin here
-        ├── theme.lua
-        ├── lualine.lua
-        ├── comment.lua
-        ├── telescope.lua
-        ├── lsp.lua
-        ├── lsp_signature.lua
-        ├── completion.lua
-        ├── treesitter.lua
-        ├── neo-tree.lua
-        ├── noice.lua
-        └── colorizer.lua
 ```
 
 ## Installation
