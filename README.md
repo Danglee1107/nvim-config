@@ -40,15 +40,11 @@ git clone https://github.com/Danglee1107/nvim-config.git "$env:LOCALAPPDATA\nvim
 Remove-Item -Recurse -Force "$env:LOCALAPPDATA\nvim\.git"
 ```
 
-### Verify
-
-Start Neovim:
+### Start Neovim:
 
 ```bash
 nvim
 ```
-
-> **Note:** Removing the `.git` directory disconnects the configuration from the original Git repository, allowing you to initialize your own repository if desired.
 
 ## Adding a new plugin
 Create one file in `lua/plugins/`, e.g. `lua/plugins/foo.lua`:
