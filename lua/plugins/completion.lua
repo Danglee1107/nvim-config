@@ -1,81 +1,144 @@
 return {
-  "hrsh7th/nvim-cmp",
-  event = "InsertEnter",
-  dependencies = {
-    "hrsh7th/cmp-nvim-lsp",
-    "hrsh7th/cmp-buffer",
-    "hrsh7th/cmp-path",
-    "L3MON4D3/LuaSnip",
-    "saadparwaiz1/cmp_luasnip",
-    "onsails/lspkind.nvim",
-  },
-  config = function()
-    local cmp = require("cmp")
-    local luasnip = require("luasnip")
-    local lspkind = require("lspkind")
+  {
+    "saghen/blink.cmp",
+    event = { "InsertEnter", "CmdlineEnter" },
 
-    cmp.setup({
-      snippet = {
-        expand = function(args)
-          luasnip.lsp_expand(args.body)
-        end,
+    dependencies = {
+      "L3MON4D3/LuaSnip",
+      "rafamadriz/friendly-snippets",
+    },
+
+    version = "1.*",
+
+    opts = {
+      -- Key mappings
+      keymap = require("config.keymaps").blink,
+
+      -- Appearance
+      appearance = {
+        nerd_font_variant = "mono",
       },
 
-      window = {
-        completion = cmp.config.window.bordered({
+      -- Completion menu
+      completion = {
+        accept = {
+          auto_brackets = {
+            enabled = true,
+          },
+        },
+
+        list = {
+          selection = {
+            preselect = false,
+            auto_insert = true,
+          },
+        },
+
+        menu = {
           border = "none",
           scrollbar = true,
-          col_offset = -3,
-          side_padding = 1,
-          winhighlight = table.concat({
-            "Normal:CmpPmenu",
-            "FloatBorder:CmpBorder",
-            "CursorLine:CmpSel",
-            "Search:None",
-          }, ","),
-        }),
-        documentation = cmp.config.window.bordered({
-          border = "rounded",
-          winhighlight = "Normal:CmpPmenu,FloatBorder:CmpBorder",
-        }),
-      },
+          winblend = 0,
 
-      formatting = {
-        fields = { "kind", "abbr", "menu" },
-        format = lspkind.cmp_format({
-          mode = "symbol_text",
-          maxwidth = { abbr = 35, menu = 20 },
-          ellipsis_char = "…",
-          menu = {
-            nvim_lsp = "[LSP]",
-            buffer = "[BUF]",
-            path = "[PATH]",
-            luasnip = "[SNIP]",
+          draw = {
+            align_to = "label",
+            columns = {
+              { "kind_icon","label" },
+              { "kind" },
+            },
+
+            components = {
+              kind_icon = {
+                ellipsis = false,
+
+                text = function(ctx)
+                  return ctx.kind_icon .. " "
+                end,
+              },
+
+              kind = {
+                ellipsis = false,
+              },
+
+              label = {
+                width = {
+                  fill = true,
+                  max = 35,
+                },
+
+                text = function(ctx)
+                  return ctx.label
+                end,
+              },
+            },
           },
-          show_labelDetails = false,
-        }),
+        },
+
+        -- Documentation window
+        documentation = {
+          auto_show = true,
+          auto_show_delay_ms = 300,
+
+          window = {
+            border = "none",
+            winblend = 0,
+          },
+        },
+
+        -- Ghost text
+        ghost_text = {
+          enabled = false,
+        },
       },
 
-      mapping = cmp.mapping.preset.insert({
-        ["<M-j>"] = cmp.mapping.select_next_item(),
-        ["<M-k>"] = cmp.mapping.select_prev_item(),
-        ["<C-f>"] = cmp.mapping.scroll_docs(4),
-        ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-        ["<CR>"] = cmp.mapping.confirm({
-          behavior = cmp.ConfirmBehavior.Replace,
-          select = true,
-        }),
-        ["<C-Space>"] = cmp.mapping.complete(),
-      }),
+      -- Sources
+      sources = {
+        default = {
+          "lsp",
+          "snippets",
+          "path",
+          "buffer",
+        },
 
-      sources = cmp.config.sources({
-        { name = "nvim_lsp" },
-        { name = "luasnip" },
-        { name = "path" },
-        { name = "buffer" },
-      }),
+        providers = {
+          lsp = {
+            fallbacks = { "buffer" },
+          },
 
-      experimental = { ghost_text = false },
-    })
-  end,
+          buffer = {
+            min_keyword_length = 3,
+            max_items = 5,
+          },
+
+          path = {
+            min_keyword_length = 0,
+          },
+
+          snippets = {
+            min_keyword_length = 2,
+          },
+        },
+      },
+
+      -- Snippet integration
+      snippets = {
+        preset = "luasnip",
+      },
+
+      -- Signature help
+      signature = {
+        enabled = false,
+      },
+
+      -- Fuzzy matching
+      fuzzy = {
+        implementation = "prefer_rust",
+        sorts = {
+          "exact",
+          "score",
+          "sort_text",
+        },
+      },
+    },
+  },
 }
+
