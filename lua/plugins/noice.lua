@@ -11,7 +11,7 @@ return {
   opts = {
     cmdline = {
       enabled = true,
-      view = "cmdline_popup",
+      view = "cmdline",
     },
     popupmenu = {
       enabled = true,
@@ -31,7 +31,7 @@ return {
       },
     },
     presets = {
-      bottom_search = true,
+      bottom_search = false,
       command_palette = true,
       long_message_to_split = true,
     },
